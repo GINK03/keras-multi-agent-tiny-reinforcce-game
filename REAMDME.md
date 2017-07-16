@@ -60,6 +60,19 @@ Q関数は状態と次にする行動を入力することで、値を得ます�
 
 ゲームに負けると、一連の選択は誤りだったとして、一連の行動を再度選択しないように、学習を行います（こうすることで、別の選択肢が強くなる）
 
+## コード＆実行
+[github](https://github.com/GINK03/keras-multi-agent-tiny-game)にて管理しています　　
+
+マルチエージェント学習
+```console
+$ python3 21-icchadame.py --reinforce
+```
+
+実際に対戦してみる  
+```console
+$ python3 21-icchadame.py --play
+```
+
 ## 参考文献
 [1] [Understanding Agent Cooperation](https://deepmind.com/blog/understanding-agent-cooperation/)  
 [2] [Multi-agent Reinforcement Learning in Sequential Social Dilemmas](https://storage.googleapis.com/deepmind-media/papers/multi-agent-rl-in-ssd.pdf)  
