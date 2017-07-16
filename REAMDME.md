@@ -32,8 +32,6 @@ Kerasで敵対的な簡単なマルチエージェントラーニングを21言�
 
 適度にランダムに行動を選択することを入れないとダメっぽいです　　
 
-
-
 ## ルール（問題設定）
 先手、後手に別れて0から最小１、最大の３つ増やした数字を言い合います　　
 
@@ -47,6 +45,14 @@ Kerasで敵対的な簡単なマルチエージェントラーニングを21言�
   <img width="300px" src="https://user-images.githubusercontent.com/4949982/28245532-fb6944b0-6a43-11e7-9ec5-76e267fe3a41.png">
 </p>
 
+## Q関数の変形
+Q関数は状態と次にする行動を入力することで、値を得ますが、今回は次の行動を直接もとめます  
+具体的には、今の状態から、次の行動を予想します  
+次の行動から、得られた値でもっともディープラーニングで値が大きかった選択を次の選択としています  
+(この出力を束ねることで、一連のゲームの行動とします)  
+<p align="center">
+  <img width="300px" src="https://user-images.githubusercontent.com/4949982/28245835-280dba4a-6a4a-11e7-8d23-de3bd52b64a3.png">
+</p>
 
 ## 参考文献
 [1] [Understanding Agent Cooperation](https://deepmind.com/blog/understanding-agent-cooperation/)  
