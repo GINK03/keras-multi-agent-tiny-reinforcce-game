@@ -18,7 +18,7 @@ Kerasで敵対的な簡単なマルチエージェントラーニングを21言�
 強化学習は、人間が特に正しい悪いなどを指定せずとも、なんらかの報酬系から報酬を得ることで報酬を最大化します  
 このとき、ある系列の状態をSとし、その時の行動をaとし、この組み合わせで得られる報酬関数をQとすると、報酬箱のようになります。  
 <p align="center">
-  <img width="200px" src="https://user-images.githubusercontent.com/4949982/28245357-9447c346-6a3f-11e7-804d-a707245a3ba2.png">
+  <img width="200px" src="https://user-images.githubusercontent.com/4949982/28245373-e7ef3be6-6a3f-11e7-8440-7307f7814321.png">
 </p>
 
 ## ルール（問題設定）
