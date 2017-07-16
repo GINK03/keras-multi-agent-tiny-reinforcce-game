@@ -23,7 +23,7 @@ x           = Dense(4000, activation='relu')( x )
 x           = Dense(3, activation='tanh')( x )
 player      = Model( inputs, x )
 player.compile( optimizer=Adam(), loss='mse', metrics=['accuracy'] ) 
-optimizers = [SGD(lr=0.2),SGD(lr=0.09),  Adam(lr=0.01), Adam(lr=0.05), Adam(), RMSprop()]
+optimizers = [SGD(), Adam(), RMSprop()]
 
 inputs      = Input( shape=(21,) ) 
 x           = Dense(4000, activation='relu')( inputs )
@@ -45,9 +45,9 @@ def schedule(i):
   elif 2000 > i:
     return 0.3
   elif 3000 > i:
-    return 0.2
+    return 0.25
   else:
-    return 0.1
+    return 0.25
 
 SCORE_BOARD = [-1, -1]
 def reinforce():
