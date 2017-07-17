@@ -10,6 +10,7 @@ from keras.layers.wrappers import Bidirectional as Bi
 from keras.layers.wrappers import TimeDistributed as TD
 from keras.engine.topology import Layer
 from keras import backend as K
+from keras.layers.merge import Concatenate
 import numpy as np
 import random
 import sys
@@ -17,28 +18,32 @@ import glob
 import pickle
 import re
 
-inputs      = Input( shape=(21,) ) 
+inputs_1    = Input( shape=(21,) ) 
+inputs_2    = Input( shape=(3,) ) 
+inputs      = Concatenate(axis=-1)( [inputs_1, inputs_2] )
 x           = Dense(4000, activation='relu')( inputs )
 x           = Dense(4000, activation='relu')( x )
-x           = Dense(3, activation='tanh')( x )
-player      = Model( inputs, x )
+x           = Dense(1, activation='linear')( x )
+player      = Model([inputs_1, inputs_2], x )
 player.compile( optimizer=Adam(), loss='mse', metrics=['accuracy'] ) 
 optimizers = [SGD(), Adam(), RMSprop()]
 
-inputs      = Input( shape=(21,) ) 
+inputs_1    = Input( shape=(21,) ) 
+inputs_2    = Input( shape=(3,) ) 
+inputs      = Concatenate(axis=-1)( [inputs_1, inputs_2] )
 x           = Dense(4000, activation='relu')( inputs )
 x           = Dense(4000, activation='relu')( x )
-x           = Dense(3, activation='tanh')( x )
-enemy       = Model( inputs, x )
-enemy.compile( optimizer=SGD(lr=0.2), loss='mse', metrics=['accuracy'] ) 
+x           = Dense(1, activation='sigmoid')( x )
+enemy       = Model( [inputs_1, inputs_2], x )
+enemy.compile( optimizer=Adam(), loss='mse', metrics=['accuracy'] ) 
 
-optimizers_enemy = [SGD(lr=0.2),SGD(lr=0.09),  Adam(lr=0.01), Adam(lr=0.05), Adam(), RMSprop()]
 index_stat = {}
 for i in range(21):
   b = [0.0]*21
   b[i] = 1.0
   index_stat[i] = b 
 
+PATTERN = [ [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0] ]
 def schedule(i):
   if   1000 > i:
     return 0.4
@@ -49,7 +54,6 @@ def schedule(i):
   else:
     return 0.25
 
-SCORE_BOARD = [-1, -1]
 def reinforce():
   # play game
   if '--resume' in sys.argv:
@@ -66,61 +70,61 @@ def reinforce():
     while True:
       next_stat_player = index_stat[now]
       if random.random() > 0.1:
-        p = np.argmax( player.predict( np.array( [ next_stat_player ] ) ) )
+        qs = [ (player.predict( [ np.array( [ next_stat_player ] ), np.array( [ xs ] ) ] ).tolist()[0][0], e) for e, xs in enumerate(PATTERN) ]
+        q  = max(qs, key=lambda x:x[0])
+        p  = q[1]
+        print( q )
+        print( qs )
       else:
         p = random.choice([0,1,2])
       lanes_player.append( (p, next_stat_player) )
       w = p + 1
       now += w
-      if now == 20:
-        score = 1
-        break
-      elif now > 20:
+      if now >= 21:
         score = -1
         break
-      # another way
+      
+      # mode enemy
       next_stat_enemy = index_stat[now]
-      if random.random() > schedule(i):
-        e = np.argmax( enemy.predict( np.array( [ next_stat_enemy ] ) ) )
+      if random.random() > 0.1:
+        qs = [ (enemy.predict( [ np.array( [ next_stat_enemy ] ), np.array( [ xs ] ) ] ).tolist()[0][0], e) for e, xs in enumerate(PATTERN) ]
+        q  = max(qs, key=lambda x:x[0])
+        p  = q[1]
+        print( q )
+        print( qs )
       else:
-        e = random.choice([0,1,2])
-      lanes_enemy.append( (e, next_stat_enemy) )
-      now += e + 1
-      if now == 20:
-        score = -1
-        break
-      elif now > 20:
+        p = random.choice([0,1,2])
+      lanes_enemy.append( (p, next_stat_enemy) )
+      w = p + 1
+      now += w
+      if now >= 21:
         score = 1
         break
-    res =  '%09d score %d\n'%(i, score)
-    result.write(res)
-    SCORE_BOARD.append( score )
-    print(res, end='')
-    # Player
-    ys, xs = [], []
-    for p, x in lanes_player:
-      y    = [0.0]*3
-      y[p] = 1.0
-      xs.append( x )
-      ys.append( y )
-    ys = np.array( ys ) * score
-    optim = random.choice( optimizers )
-    player.otimizer = optim
-    player.fit(np.array(xs), ys, epochs=2  )
 
+    result.write('%09d %d\n'%(i, score))
+    print( '%09d %d'%(i, score))
+
+    # Player
+    x1s, x2s = [], []
+    for p, x1 in lanes_player:
+      x2    = [0.0]*3
+      x2[p] = 1.0
+      x1s.append( x1 )
+      x2s.append( x2 )
+    x2s = np.array( x2s ) 
+    player.fit( [np.array(x1s), x2s], np.array( [score/len(x1s)]*len(x1s) ) , epochs=2  )
+    
     # Enemy
-    ys, xs = [], []
-    for e, x in lanes_enemy:
-      y    = [0.0]*3
-      y[e] = 1.0
-      xs.append( x )
-      ys.append( y )
-    enemy_score = -1*score
-    ys = np.array( ys ) * enemy_score
-    optim = random.choice( optimizers_enemy )
-    enemy.otimizer = optim
-    enemy.fit(np.array(xs), ys, epochs=2  )
-    if i%2000 == 0:
+    x1s, x2s = [], []
+    for p, x1 in lanes_enemy:
+      x2    = [0.0]*3
+      x2[p] = 1.0
+      x1s.append( x1 )
+      x2s.append( x2 )
+    x2s = np.array( x2s ) 
+    enemy.fit( [np.array(x1s), x2s], np.array( [(score * -1)/len(x1s)]*len(x1s) ) , epochs=2  )
+
+    if i%1000 == 0:
       player.save_weights('models/player_%09d.h5'%i)
       enemy.save_weights('models/enemy_%09d.h5'%i)
 
@@ -131,9 +135,11 @@ def play():
   now = 0
   #cursol_buff = []
   while True:
-    next_stat = index_stat[now]
-    p = np.argmax( player.predict( np.array( [ next_stat ] ) ) )
-    w = p + 1
+    next_stat_player = index_stat[now]
+    qs = [ (player.predict( [ np.array( [ next_stat_player ] ), np.array( [ xs ] ) ] ).tolist()[0][0], e) for e, xs in enumerate(PATTERN) ]
+    q  = max(qs, key=lambda x:x[0])
+    p  = q[1]
+    w  = p + 1
     print('コンピュータは{}を選択しました'.format(w))
     now += w
     if now >= 21:
