@@ -60,6 +60,11 @@ Q関数は状態と次にする行動を入力することで、値を得ます�
 
 ゲームに負けると、一連の選択は誤りだったとして、一連の行動を再度選択しないように、学習を行います（こうすることで、別の選択肢が強くなる）
 
+## マルチエージェント化
+同じような報酬系をもつモデルを２つ以上用意して、対決させました  
+先に21以上を言った方が負けというルールで二つのモデルに対決させました  
+
+
 ## コード＆実行
 [github](https://github.com/GINK03/keras-multi-agent-tiny-game)にて管理しています　　
 
@@ -79,6 +84,8 @@ $ python3 21-icchadame.py --play
 例えば、次のような結果になります  
 
 なお、最適解は、初手で１を打って次に4を取らせることですが、初期値依存性があり、この状態に収束させるのは結構難しいです
+
+例1. 
 ```console
 コンピュータは3を選択しました
 now position 3
@@ -103,7 +110,30 @@ now position 20
 結果 あなたの負け
 ```
 
-
+例2. 
+```console
+コンピュータは3を選択しました
+now position 3
+数字（１−３）を入力してください
+3
+コンピュータは2を選択しました
+now position 8
+数字（１−３）を入力してください
+3
+コンピュータは1を選択しました
+now position 12
+数字（１−３）を入力してください
+3
+コンピュータは1を選択しました
+now position 16
+数字（１−３）を入力してください
+3
+コンピュータは1を選択しました
+now position 20
+数字（１−３）を入力してください
+3
+結果 あなたの負け
+```
 ## 参考文献
 [1] [Understanding Agent Cooperation](https://deepmind.com/blog/understanding-agent-cooperation/)  
 [2] [Multi-agent Reinforcement Learning in Sequential Social Dilemmas](https://storage.googleapis.com/deepmind-media/papers/multi-agent-rl-in-ssd.pdf)  
