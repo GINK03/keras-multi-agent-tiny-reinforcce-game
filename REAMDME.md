@@ -1,4 +1,4 @@
-# Multi Agent Learning for Keras
+# Multi Agent Deep Learning for Keras
 
 ## Kerasでマルチエージェントラーニング
 マルチエージェントラーニングは、相互に影響を与え合うモデルが強調ないし、敵対して、目的となる報酬を最大化するシチュエーションのディープラーニングです[1][2]
