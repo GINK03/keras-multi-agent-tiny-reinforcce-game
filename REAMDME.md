@@ -59,7 +59,7 @@ Q関数は状態と次にする行動を入力することで、予想する報�
 
 この出力がもっとも高い行動をゲーム中保存しておき、一連のゲームの行動とします  
 <p align="center">
-  <img width="300px" src="https://user-images.githubusercontent.com/4949982/28245835-280dba4a-6a4a-11e7-8d23-de3bd52b64a3.png">
+  <img width="450px" src="https://user-images.githubusercontent.com/4949982/28259591-f631b918-6b11-11e7-8e65-53450eb09ac4.png">
 </p>
 
 ## マルチエージェント
