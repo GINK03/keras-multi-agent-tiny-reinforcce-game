@@ -45,13 +45,9 @@ Kerasで敵対的な簡単なマルチエージェントラーニングを21言�
   <img width="300px" src="https://user-images.githubusercontent.com/4949982/28245532-fb6944b0-6a43-11e7-9ec5-76e267fe3a41.png">
 </p>
 
-これをもう少し雑に変更します（ここの関数について、最適な選択があり、次に影響しないという仮説を立てると、この式が成り立ちます）　　
+これをもう少し雑に変更します（Nはゲーム終了までにかかった手数）　　
 <p align="center">
-  <img width="420px" src="https://user-images.githubusercontent.com/4949982/28256325-2fd83392-6afc-11e7-9da2-ef1a35e59ce4.png">
-</p>
-ここでは、具体的なQ関数が具体的な最大の値（１）をもつので、これに直接当てに行きます
-<p align="center">
-  <img width="480px" src="https://user-images.githubusercontent.com/4949982/28256526-4797306c-6afe-11e7-8ef9-e46865ffb0fd.png">
+  <img width="420px" src="https://user-images.githubusercontent.com/4949982/28259485-707732a8-6b11-11e7-834a-c0086963f58e.png">
 </p>
 
 勝った時の報酬を+1, 負けた時の報酬を-1のReward関数とすると、以上の式を最小化すれば、勝った時はその選択をより強化して学習し、負けた時は選択を誤ったとして、別の可能性を探索する可能性が強くなります　 
