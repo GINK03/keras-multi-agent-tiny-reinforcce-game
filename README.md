@@ -49,7 +49,7 @@ Q関数は状態と次にする行動を入力することで、報酬の値を�
 
 今回は、それぞれの行動と状態から、唯一に報酬が決まるとして、その和でQ関数が表現されるとしました（この問題設定がいつも適応できるわけではなさそうです）  
 <p align="center">
-  <img width="350px" src="https://user-images.githubusercontent.com/4949982/28262027-8056c9e4-6b1c-11e7-80ec-9ad82a0d7904.png">
+  <img width="300px" src="https://user-images.githubusercontent.com/4949982/28262027-8056c9e4-6b1c-11e7-80ec-9ad82a0d7904.png">
 </p>
 
 
