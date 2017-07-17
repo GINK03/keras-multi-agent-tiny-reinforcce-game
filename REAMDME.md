@@ -1,6 +1,6 @@
-# Multi Agent Deep Q Learning for Keras
+# Multi Agent Deep Q Network for Keras
 
-## Kerasでマルチエージェントラーニング
+## Kerasでマルチエージェント DQN
 マルチエージェントラーニングは、相互に影響を与え合うモデルが強調ないし、敵対して、目的となる報酬を最大化するシチュエーションのディープラーニングです[1][2]
 
 強化学習の特殊系と捉えることができそです　　
