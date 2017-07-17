@@ -73,6 +73,37 @@ $ python3 21-icchadame.py --reinforce
 $ python3 21-icchadame.py --play
 ```
 
+## 強さについて
+この21言っちゃダメゲームは4の倍数を取りに行けば勝てることがわかっている問題なのですが、途中から4の倍数にはめ込もうとしようとしていることがわかります  
+
+例えば、次のような結果になります  
+
+なお、最適解は、初手で１を打って次に4を取らせることですが、初期値依存性があり、この状態に収束させるのは結構難しいです
+```console
+コンピュータは3を選択しました
+now position 3
+数字（１−３）を入力してください
+2
+コンピュータは3を選択しました
+now position 8
+数字（１−３）を入力してください
+1
+コンピュータは3を選択しました
+now position 12
+数字（１−３）を入力してください
+2
+コンピュータは2を選択しました
+now position 16
+数字（１−３）を入力してください
+1
+コンピュータは3を選択しました
+now position 20
+数字（１−３）を入力してください
+1
+結果 あなたの負け
+```
+
+
 ## 参考文献
 [1] [Understanding Agent Cooperation](https://deepmind.com/blog/understanding-agent-cooperation/)  
 [2] [Multi-agent Reinforcement Learning in Sequential Social Dilemmas](https://storage.googleapis.com/deepmind-media/papers/multi-agent-rl-in-ssd.pdf)  
