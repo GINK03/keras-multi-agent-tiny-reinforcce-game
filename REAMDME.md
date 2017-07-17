@@ -139,6 +139,16 @@ now position 20
 3
 結果 あなたの負け
 ```
+## 実際やってみて
+Reinforce Learning関しては教師あり学習、教師なし学習についで、最後にやろうと思っていたこともあり、あまり深く手をつけていませんでした  
+
+最初、理論をあまり勉強せず、とりあえず適当にコードを書いてみたのですが、収束はめっちゃ早いけど、すぐオーバーフィットしてしまうモデルになってしまいました。基礎理論を再度確認して、コードに落として行くという気持ちでやると、サクサクできます（反省）  
+
+マルチエージェントにすることで、コードがやばいことになるのかなと思ったのですが、意外とシンプルに構築することができました  
+
+今回は敵対的なゲームでしたが、時には協力し、時には裏切るモデルなど面白そうであります。学習させることも容易なので、様々な応用が利きそうで面白そうでした  
+
+
 ## 参考文献
 [1] [Understanding Agent Cooperation](https://deepmind.com/blog/understanding-agent-cooperation/)  
 [2] [Multi-agent Reinforcement Learning in Sequential Social Dilemmas](https://storage.googleapis.com/deepmind-media/papers/multi-agent-rl-in-ssd.pdf)  
