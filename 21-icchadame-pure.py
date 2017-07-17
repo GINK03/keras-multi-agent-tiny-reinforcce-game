@@ -33,7 +33,7 @@ inputs_2    = Input( shape=(3,) )
 inputs      = Concatenate(axis=-1)( [inputs_1, inputs_2] )
 x           = Dense(4000, activation='relu')( inputs )
 x           = Dense(4000, activation='relu')( x )
-x           = Dense(1, activation='sigmoid')( x )
+x           = Dense(1, activation='linear')( x )
 enemy       = Model( [inputs_1, inputs_2], x )
 enemy.compile( optimizer=Adam(), loss='mse', metrics=['accuracy'] ) 
 
@@ -56,14 +56,16 @@ def schedule(i):
 
 def reinforce():
   # play game
+  I = 0
   if '--resume' in sys.argv:
     model = sorted(glob.glob('models/player_*.h5')).pop()
     player.load_weights(model)
     model = sorted(glob.glob('models/enemy_*.h5')).pop()
     enemy.load_weights(model)
+    I = int( re.search(r'(\d{1,})', model).group(1) )
   
   result = open('result.txt', 'w')
-  for i in range(300000):
+  for i in range(I, 300000):
     lanes_player = []
     lanes_enemy = []
     now = 0
@@ -73,7 +75,6 @@ def reinforce():
         qs = [ (player.predict( [ np.array( [ next_stat_player ] ), np.array( [ xs ] ) ] ).tolist()[0][0], e) for e, xs in enumerate(PATTERN) ]
         q  = max(qs, key=lambda x:x[0])
         p  = q[1]
-        print( q )
         print( qs )
       else:
         p = random.choice([0,1,2])
@@ -86,16 +87,15 @@ def reinforce():
       
       # mode enemy
       next_stat_enemy = index_stat[now]
-      if random.random() > 0.1:
+      if random.random() > 0.3:
         qs = [ (enemy.predict( [ np.array( [ next_stat_enemy ] ), np.array( [ xs ] ) ] ).tolist()[0][0], e) for e, xs in enumerate(PATTERN) ]
-        q  = max(qs, key=lambda x:x[0])
-        p  = q[1]
-        print( q )
+        e  = max(qs, key=lambda x:x[0])
+        e  = e[1]
         print( qs )
       else:
-        p = random.choice([0,1,2])
-      lanes_enemy.append( (p, next_stat_enemy) )
-      w = p + 1
+        e = random.choice([0,1,2])
+      lanes_enemy.append( (e, next_stat_enemy) )
+      w = e + 1
       now += w
       if now >= 21:
         score = 1
@@ -112,6 +112,7 @@ def reinforce():
       x1s.append( x1 )
       x2s.append( x2 )
     x2s = np.array( x2s ) 
+    print('player', (score)/len(x1s) )
     player.fit( [np.array(x1s), x2s], np.array( [score/len(x1s)]*len(x1s) ) , epochs=2  )
     
     # Enemy
@@ -122,6 +123,7 @@ def reinforce():
       x1s.append( x1 )
       x2s.append( x2 )
     x2s = np.array( x2s ) 
+    print('enemy', (score*-1)/len(x1s) )
     enemy.fit( [np.array(x1s), x2s], np.array( [(score * -1)/len(x1s)]*len(x1s) ) , epochs=2  )
 
     if i%1000 == 0:
