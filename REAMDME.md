@@ -73,12 +73,12 @@ Q関数は状態と次にする行動を入力することで、予想する報�
 
 マルチエージェント学習
 ```console
-$ python3 21-icchadame.py --reinforce
+$ python3 21-icchadame-pure.py --reinforce
 ```
 
 実際に対戦してみる  
 ```console
-$ python3 21-icchadame.py --play
+$ python3 21-icchadame-pure.py --play
 ```
 
 ## 強さについて
