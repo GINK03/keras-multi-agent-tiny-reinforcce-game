@@ -1,8 +1,8 @@
 import numpy as np
 def update(X, y, x, type=1):
   W,H = np.array(X).shape 
-  print(W,H)
-  print(X)
+  #print(W,H)
+  #print(X)
 
   # scan to right
   buff = []
@@ -17,7 +17,7 @@ def update(X, y, x, type=1):
         X[y][i] = type
       break
     buff.append( (y,i) )
-    print(scan)
+    #print(scan)
   
   # scan to left
   buff = []
@@ -32,7 +32,7 @@ def update(X, y, x, type=1):
         X[y][i] = type
       break
     buff.append( (y,i) )
-    print(scan)
+    #print(scan)
  
   # scan to duttom
   buff = []
@@ -47,7 +47,7 @@ def update(X, y, x, type=1):
         X[i][x] = type
       break
     buff.append( (i, x) )
-    print(scan)
+    #print(scan)
   
   # scan to top
   buff = []
@@ -62,5 +62,5 @@ def update(X, y, x, type=1):
         X[i][x] = type
       break
     buff.append( (i, x) )
-    print(scan)
+    #print(scan)
   return X
